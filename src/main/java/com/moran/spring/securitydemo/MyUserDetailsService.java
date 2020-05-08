@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.moran.spring.securitydemo.models.Authorities;
 import com.moran.spring.securitydemo.models.MyUserDetails;
 import com.moran.spring.securitydemo.models.User;
 
@@ -17,33 +16,38 @@ public class MyUserDetailsService implements UserDetailsService {
 
 	@Autowired
 	UserRepository userRepository;
-	AuthorityRepository authorityRepository;
 	
 	@Override
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 		
+		MyUserDetails myUserDetails;
 		System.out.println("\n\n USERNAME == " + userName);
+		// Tried to create a separate JPA repository for the authorities 
+		// but getting an exception so keeping roles in user table for now 	
+				
+		try {
+			
+			User user = userRepository.findByUserName(userName);
+	
+			myUserDetails = new MyUserDetails(user);
+			
+			System.out.println("\n\n PASSWORD == " + myUserDetails.getPassword());
+			System.out.println("\n\n AUTHORITIES == " + myUserDetails.getAuthorities());
 		
-		User user = userRepository.findByUserName(userName);
+		}
+		catch (Exception ex) {
+			throw new UsernameNotFoundException("Not found: " + userName);
+		}
 		
-		// Throws -> No converter found capable of converting 
-		// from type [com.moran.spring.securitydemo.models.User] 
-		// to   type [com.moran.spring.securitydemo.models.Authorities
-		// FIX - The type of entity and ID that a JPARepository works with are defined in the generic parameters in the Constructor
-		// NEED TO - create a separate repository for the authorities as one solution. 
-		
-		
-		Authorities authorities = authorityRepository.findAuthorityByUserName(userName);
-		
-		//user.orElseThrow( () -> new UsernameNotFoundException ("Not found User: " + userName));
-		
-		MyUserDetails myUserDetails = new MyUserDetails(user, authorities);
+		/** THIS IS THE ONLY THING I'VE CHANGED !!!!****/
 		
 		//return user.map(MyUserDetails::new).get();
 		return myUserDetails;
 		
 	}
 
+	
+	/** CUSTOM METHODS TO EXTEND FUNCTIONALITY **/
 	
 	/**
 	 * @Override

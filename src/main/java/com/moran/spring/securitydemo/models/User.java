@@ -12,12 +12,12 @@ public class User {
 	private String userName;
 	private String password;
 	private boolean active;
-	private String[] roles;
+	private String roles;
 	
-	public String[] getRoles() {
+	public String getRoles() {
 		return roles;
 	}
-	public void setRoles(String[] roles) {
+	public void setRoles(String roles) {
 		this.roles = roles;
 	}
 	public int getId() {

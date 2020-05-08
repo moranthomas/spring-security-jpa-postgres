@@ -26,11 +26,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
 
 	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+	protected void configure(AuthenticationManagerBuilder authMgrBuilder) throws Exception {
 		
 		//Set your configuration on the Auth object passed in 
 		//auth.jdbcAuthentication().dataSource(dataSource);
-		auth.userDetailsService(userDetailsService);
+		
+		System.out.println("\n\n get in configure auth and authMgrBuilder == " + authMgrBuilder);
+		
+		authMgrBuilder.userDetailsService(userDetailsService);
 	}	
 	
 	@Bean
@@ -45,12 +48,26 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 	
 		// You should always go from most restrictive to least restrictive as you go down 
-		http.authorizeRequests()
-			//.antMatchers("/", "static/css", "static/js").permitAll();    // This is if you have static folders :) 
-			.antMatchers("/researcher").hasRole("RESEARCHER")
-			.antMatchers("/patient").hasRole("PATIENT")
-			.antMatchers("/dashboard").hasAnyRole("RESEARCHER", "PATIENT")
-			.antMatchers("/").permitAll()
-			.and().formLogin();
+		
+		System.out.println("\n\n get in configure http and http == " + http.authorizeRequests());
+
+		try {
+			
+		/** THIS only gets called once on startup and DOESN't GET CALLED AGAIN ON EACH REQUEST ! **/ 
+			
+		/** THESE are all case sensitive and .hasRole() expects to strip out the Role from Authorities list **/ 
+			
+			http.authorizeRequests()
+				//.antMatchers("/", "static/css", "static/js").permitAll();    // This is if you have static folders :) 
+				.antMatchers("/researcher").hasRole("RESEARCHER")
+				.antMatchers("/patient").hasRole("PATIENT")
+				.antMatchers("/dashboard").hasAnyRole("RESEARCHER", "PATIENT")
+				.antMatchers("/").permitAll()
+				.and().formLogin();
+		} 
+		catch (Exception ex) {
+			
+			System.out.println("got exception --- " + ex);
+		}
 	}
 }

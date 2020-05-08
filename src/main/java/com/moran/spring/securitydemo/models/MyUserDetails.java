@@ -12,19 +12,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public class MyUserDetails implements UserDetails {
 	
-	/** This is the class that has to be created if you want to implement Authentication using JPA **/ 
-	
-
-	// Hardcode everything except username for now for demo purposes 
+	/** This is the class that has to be created if you want to implement Authentication using JPA **/  
 	
 	private String userName;
 	private String password;
 	private boolean active;
 	private List<GrantedAuthority> authorities;
-	//private Authorities user_authorities;
 	
 
-	public MyUserDetails(User user, Authorities authorities) {
+	public MyUserDetails(User user) {
 		this.userName = user.getUserName();
 		this.password = user.getPassword();
 		this.active = user.isActive();
@@ -32,13 +28,9 @@ public class MyUserDetails implements UserDetails {
 		//Can make a new Authorities table and Entity and getRoles from that object instead.... 
 		//user_authorities = new Authorities()
 		
-		this.authorities = Arrays.stream(authorities.getAuthority().split(","))
-		.map(SimpleGrantedAuthority::new)
-		.collect(Collectors.toList());
-		
-		/*this.authorities = Arrays.stream(user.getRoles().split(","))
-				.map(SimpleGrantedAuthority::new)
-				.collect(Collectors.toList());*/
+		 this.authorities = Arrays.stream(user.getRoles().split(","))
+                 .map(SimpleGrantedAuthority::new)
+                 .collect(Collectors.toList());
 		
 	}
 
@@ -57,6 +49,7 @@ public class MyUserDetails implements UserDetails {
 		return userName;
 	}
 
+	/** Hardcode boolean get methods to true for now for demo purposes **/
 	@Override
 	public boolean isAccountNonExpired() {
 		return true;
