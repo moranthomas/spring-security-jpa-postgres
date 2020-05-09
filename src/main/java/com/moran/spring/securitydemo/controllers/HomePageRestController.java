@@ -1,4 +1,4 @@
-package com.moran.spring.securitydemo;
+package com.moran.spring.securitydemo.controllers;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,4 +25,5 @@ public class HomePageRestController {
 	public String researcher() {
 		return ("<h1> Welcome Researcher !!! </h1>");
 	}
+	
 }

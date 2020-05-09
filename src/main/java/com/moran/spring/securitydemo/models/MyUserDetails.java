@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public class MyUserDetails implements UserDetails {
 	
-	/** This is the class that has to be created if you want to implement Authentication using JPA **/  
+	private static final long serialVersionUID = -7804717169082544355L;
 	
 	private String userName;
 	private String password;
@@ -24,10 +24,7 @@ public class MyUserDetails implements UserDetails {
 		this.userName = user.getUserName();
 		this.password = user.getPassword();
 		this.active = user.isActive();
-		
-		//Can make a new Authorities table and Entity and getRoles from that object instead.... 
-		//user_authorities = new Authorities()
-		
+				
 		 this.authorities = Arrays.stream(user.getRoles().split(","))
                  .map(SimpleGrantedAuthority::new)
                  .collect(Collectors.toList());
