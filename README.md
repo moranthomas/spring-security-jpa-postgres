@@ -4,6 +4,7 @@
 
 Check that postgres got installed correctly by checking the version:
 $ postgres -V
+
 (on windows just use the postgresSQL shell that comes with the installer) 
 
 ## Create a new 'postgres' user
