@@ -13,5 +13,7 @@ $ /usr/local/opt/postgres/bin/createuser -s postgres
 
 ## Create a new database and grant access to a user on it:
 postgres=# CREATE DATABASE security_demo;
-postgres=# create user realli with encrypted password 'password';
-postgres=# grant all privileges on database security_demo to postgres;
+
+postgres=# create user user1 with encrypted password 'password';
+
+postgres=# grant all privileges on database security_demo to user1;
