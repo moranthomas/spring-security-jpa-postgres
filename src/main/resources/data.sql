@@ -1,11 +1,2 @@
-INSERT INTO USERS ( username, password, enabled) 
-VALUES ('thomas', 'password', true);
-
-INSERT INTO USERS ( username, password, enabled) 
-VALUES ('merck', 'password', true);
-
-INSERT INTO AUTHORITIES ( username, authority) 
-VALUES ('thomas', 'ROLE_PATIENT');
-
-INSERT INTO AUTHORITIES ( username, authority) 
-VALUES ('merck', 'ROLE_RESEARCHER');
+insert into users (id, active, user_name, password, roles) values(1, true, 'password', 'norm', 'ROLE_USER');
+insert into users (id, active, user_name, password, roles) values(2, true, 'password', 'super', 'ROLE_ADMIN');
