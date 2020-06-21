@@ -1,9 +1,14 @@
 package com.moran.spring.securitydemo;
 
+import javax.sql.DataSource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -27,11 +32,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	private static final Logger logger = LoggerFactory.getLogger(MyUserDetailsService.class);
 
+	@Autowired
+	private Environment env;
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder authMgrBuilder) throws Exception {
 
 		authMgrBuilder.userDetailsService(userDetailsService);
+		
 	}
 
 	@Bean
@@ -47,6 +55,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 		// You should always go from most restrictive to least restrictive
 		// These are case sensitive and .hasRole() expects the database entry to be preceeded by ROLE_
+		
+		String database_url = env.getProperty("spring.datasource.url");
+		logger.info("\n\n In Security Config Class and database_url = " + database_url + "\n");
+
 
 		try {
 			http.authorizeRequests()
